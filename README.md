@@ -28,13 +28,13 @@ Windows
 
 As of now, not planning on making work for windows sorry :(
 
-Linux
+Linux (NOTE: Need to check if the script contains all necessary pip packages to install lol)
 
 ```
 ./dependencies
 ```
 
-Mac
+Mac (NOTE: Might need to test if the dependencies script works for mac)
 
 ```
 sudo chmod u+x ./dependencies
