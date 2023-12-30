@@ -29,8 +29,6 @@ LANGUAGES = {
     "sql": "sql",
     "r": "r",
     "asm": "assembly",
-    "cmine": "cmine",
-    "lpu": "lpu",
     "" : "",
 }
 
@@ -65,8 +63,6 @@ ALL_LANGUAGES = {
     "r": "r",
     "mat": "matlab",
     "asm": "assembly",
-    "cmine": "cmine",
-    "lpu": "lpu",
 }
 
 LANGUAGES_REVERSE = {
@@ -100,8 +96,6 @@ LANGUAGES_REVERSE = {
     "r": "r",
     "mat": "matlab",
     "assembly": "asm",
-    "cmine": "cmine",
-    "lpu": "lpu",
 }
 
 LICENSE = {
