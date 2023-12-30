@@ -44,6 +44,12 @@ sudo chmod u+x ./dependencies
 ./dependencies
 ```
 
+3. Run the build script to build the project
+
+```
+./build
+```
+
 # How To Use
 
 ### Set your template directory
@@ -57,9 +63,34 @@ chpm -s
 chpm set
 ```
 
-The repository will come with a sample template folder as reference.
+The repository will come with a sample template folder as a reference. You can use this template directory example as your primary template directory and change it how you wish.
 
-NOTE: Template folders must be the name of the language you wish to make the project of
+NOTE: Template folders must be the name of the language you wish to make the project of. There must also be a newfile directory inside of the templates directory that has the templates of all the new files you can create for a language
+
+Template directory structure
+```
+└── templates_directory
+    ├── c
+    ├── c#
+    ├── c++
+    ├── html
+    ├── java
+    ├── newfile
+    │   ├── README.md
+    │   ├── template.cpp
+    │   ├── template.h
+    │   ├── template.hpp
+    │   ├── template.html
+    │   ├── template.js
+    │   ├── templateMain.cpp
+    │   ├── template.py
+    │   ├── template.sh
+    │   └── template.ts
+    ├── python
+    └── ...
+```
+
+If you would like to add more languages that aren't currently supported, you can modify the `choice-project-manager/chpm/main.py` script and add the languages to the LANGUAGES array and update the ALL_LANGUAGES array if it wasn't listed there initially.
 
 ### Create projects
 
