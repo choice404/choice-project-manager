@@ -7,7 +7,7 @@
 * [Version History](#version-history)
 
 # About
-v0.2
+v0.1.0
 
 A project template manager created using Jinja2 in python to create new project and add new files to projects created with this
 
