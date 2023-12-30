@@ -101,3 +101,4 @@ chpm --help
 - [ ] Initializing project even if it has already been made but not using the project manager
 - [ ] Have the script read from script env file to get list of template folders and not rely on language names
 - [ ] Have project automatically add license in template
+- [ ] Make it more user friendly and usable by more people since this was originally made with myself in mind
