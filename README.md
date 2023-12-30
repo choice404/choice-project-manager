@@ -5,6 +5,7 @@
 * [Installation](#installation)
 * [How To Use](#how-to-use)
 * [Version History](#version-history)
+* [To-do](#to-do)
 
 # About
 v0.1.0
@@ -40,7 +41,7 @@ sudo chmod u+x ./dependencies
 
 # How To Use
 
-## Set your template directory
+### Set your template directory
 Go to the directory where all of your jinja2 templates will be stored
 
 ```
@@ -55,7 +56,7 @@ The repository will come with a sample template folder as reference.
 
 NOTE: Template folders must be the name of the language you wish to make the project of
 
-## Create projects
+### Create projects
 
 ```
 chpm create
@@ -66,7 +67,7 @@ Flags
 - `-d, --desc` - Project description
 - `-a, --auth` - Project author
 
-## Create new file in a Choice project
+### Create new file in a Choice project
 
 ```
 chpm newfile
@@ -76,7 +77,7 @@ Flags
 - `-f, --newfile` - New file name
 
 
-## Help
+### Help
 
 ```
 chpm --help
