@@ -1,5 +1,8 @@
 # Choice Project Manager
 
+[![version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/choisauce/choice-project-manager)
+[![License](https://img.shields.io/badge/License-GPL3.0-red.svg)](https://github.com/choisauce/choice-project-manager/blob/main/LICENSE)
+
 ![Demo](./readme_assets/chpm.gif)
 
 # Table of Contents
