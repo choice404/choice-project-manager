@@ -1,5 +1,7 @@
 # Choice Project Manager
 
+![Demo](./readme_assets/chpm.gif)
+
 # Table of Contents
 * [About](#about)
 * [Installation](#installation)
@@ -98,3 +100,4 @@ chpm --help
 - [ ] Editing project config and applying changes across all files in the project
 - [ ] Initializing project even if it has already been made but not using the project manager
 - [ ] Have the script read from script env file to get list of template folders and not rely on language names
+- [ ] Have project automatically add license in template
