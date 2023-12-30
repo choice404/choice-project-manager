@@ -1,0 +1,87 @@
+#!/bin/bash
+
+:<<'COMMENT'
+Copyright (C) 2023 Austin Choi
+See end of file for extended copyright information
+COMMENT
+
+# This script is used to install the dependencies for the program
+
+# Packages to install
+packages=('click' 'python-dotenv' 'setuptools' 'wheel' 'jinja2' 'build' )
+
+# Install Python 3 according to the operating system
+operatingSystem=$(uname -s)
+
+if [ "${operatingSystem}" == "Linux" ]
+then
+    # Check if Python 3 is installed
+    if command -v python3 &>/dev/null; then
+        echo "Python 3 is already installed."
+    else
+        # Install Python3
+        sudo apt-get install python3
+    fi
+    # Check if pip is installed
+    if command -v pip &>/dev/null; then
+        echo "Pip is already installed."
+    else
+        # Install pip
+        sudo apt-get install python3-pip
+    fi
+
+elif [ "${operatingSystem}" == "Darwin" ]
+then
+    # Check if Homebrew is installed
+    if command -v brew &>/dev/null; then
+        echo "Homebrew is already installed."
+    else
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        chmod +x install.sh
+
+        ./install.sh
+    fi
+    # Check if Python 3 is installed
+    if command -v python3 &>/dev/null; then
+        echo "Python 3 is already installed."
+    else
+
+        # Install Python3
+        brew install python@3
+    fi
+    # Check if pip is installed
+    if command -v pip &>/dev/null; then
+        echo "Pip is already installed."
+    else
+        # Install pip
+        brew install pip3
+    fi
+elif [ "${operatingSystem}" == "CYGWIN" ]
+then
+    echo "To install dependencies for a windows operating system please run the dependencies.bat script instead in the windows command prompt or click on the script in the file explorer."
+    exit
+fi
+
+if [ ${#packages[@]} -gt 0 ]
+then
+    # Upgrade pip
+    python3 -m pip install --upgrade pip
+    # Install packages
+    for package in ${packages[@]}
+    do
+        python3 -m pip install ${package}
+        python3 -m pip install ${package} --upgrade
+    done
+else
+    echo "No packages needed to install"
+fi
+
+:<<'COMMENT'
+Copyright (C) 2023 Austin Choi
+
+Choice Project Manager
+A project template manager created using Jinja2 in python to create new project and add new files to projects created with this
+
+This code is licensed under the GNU General Public License 3.0.
+Please see the LICENSE file in the root directory of this project for the full license details.
+COMMENT

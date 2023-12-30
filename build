@@ -1,0 +1,19 @@
+#!/bin/bash
+
+:<<'COMMENT'
+Copyright (C) 2023 Austin Choi
+See end of file for extended copyright information
+COMMENT
+
+python3 setup.py sdist bdist_wheel
+cd dist
+pip3 install chpm-0.1.0.tar.gz
+
+:<<'COMMENT'
+Copyright (C) 2023 Austin Choi
+
+Choice Project Manager
+A project template manager created using Jinja2 in python to create new project and add new files to projects created with this
+
+This code is licensed under the GNU General Public License 3.0.
+COMMENT
