@@ -109,9 +109,12 @@ script_env = os.path.join(script_dir, ".chpm.env")
 
 if not os.path.exists(script_env):
     with open(script_env, 'w') as file:
-        file.write(f'''TEMPLATE_DIR=""''')
+        file.write(f'''TEMPLATE_DIR=
+TEMPLATE_NAMES=""''')
 
 load_dotenv(dotenv_path=script_env)
+
+TEMPLATE_NAMES = os.getenv("TEMPLATE_NAMES")
 
 template_dir = os.getenv("TEMPLATE_DIR")
 
@@ -126,8 +129,12 @@ template_dir = os.getenv("TEMPLATE_DIR")
 @click.option('-ls', '--list', 'list_templates', is_flag=True, help="List all available templates")
 @click.option('-s', '--set', 'set_template', is_flag=True, help="Set the current directory as the template directory")
 @click.option('-l', '--license', 'list_license', is_flag=True, help="List all available licenses")
-def main(cmd, language, license_name, filename, name, desc, auth, list_templates, set_template, list_license):
-    '''
+@click.option('-g', '--git', 'git', is_flag=True, help="Initialize created project as a git repository")
+def main(cmd, language, license_name, filename, name, desc, auth, list_templates, set_template, list_license, git):
+    '''ument('license_name', type=click.Choice(list(LICENSE.keys())), default="arr")
+@click.option('-f', '--filename', help="The name of the newfile")
+@click.option('-n', '--name', help="The name of the project")
+@click.option('-d', '--desc', 
     A template managing project to create new projects and files using templates
             
             Parameters:
@@ -167,7 +174,7 @@ Syntax: chpm create <language> <license?>''')
     elif cmd == "newfile":
         newfile(filename, language)
     elif cmd == "create":
-        create(name, desc, auth, language, license_name)
+        create(name, desc, auth, language, license_name, git)
 
 def set_template_dir():
     '''
@@ -181,15 +188,20 @@ def set_template_dir():
     current_path = os.getcwd()
     template_dir_prompt = click.prompt(f'Set {current_path} as the template directory? (y/n)')
     if template_dir_prompt.lower() == "y":
-        with open(script_env, 'w') as file:
-            file.write(f'''TEMPLATE_DIR="{current_path}"''')
         print(f'{current_path} set as the template directory.')
+        all_items = os.listdir(current_path)
+        directory_items = [item for item in all_items if (os.path.isdir(os.path.join(current_path, item)) and item != ".git")]
+        with open(script_env, 'w') as file:
+            file.write(f'''TEMPLATE_DIR="{current_path}
+TEMPLATE_NAMES={directory_items}"''')
+        print("Template directory set successfully.")
+
     elif(template_dir_prompt.lower() == 'n'):
         return
     else:
         print("Invalid choice")
 
-def create(name, desc, auth, language, license_name):
+def create(name, desc, auth, language, license_name, git):
     '''
     Creates a new project using the project information or a specified language
 
@@ -226,6 +238,8 @@ year="{ date.today().year }"''')
 
     os.chdir(name)
 
+    new_project_dir = os.getcwd()
+
     dotenv_path = os.path.join(os.getcwd(), '.project.env')
     load_dotenv(dotenv_path)
 
@@ -247,6 +261,13 @@ year="{ date.today().year }"''')
             rendered_content = template.render(**template_vars)
             with open(output_path, 'w') as output_file:
                 output_file.write(rendered_content)
+
+    if git:
+        os.chdir(new_project_dir)
+        os.system("git init")
+        os.system("git add .")
+        os.system("git commit -m 'Initial commit'")
+        os.chdir('../')
 
     print(f'Project "{name}" created successfully.')
 
@@ -280,8 +301,6 @@ def newfile(filename, language):
             break
 
     template_vars = os.environ
-    # while project_language not in LANGUAGES.keys():
-    #     project_language = click.prompt("Enter project language")
 
     if project_language == "html":
         tailwind = click.prompt("Do you want to use tailwindcss? (y/n)")

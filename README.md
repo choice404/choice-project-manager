@@ -13,7 +13,7 @@
 * [To-do](#to-do)
 
 # About
-v0.1.0
+v0.1.1
 
 A project template manager created using Jinja2 in python to create new project and add new files to projects created with this
 
@@ -122,17 +122,23 @@ chpm --help
 # Version History
 
 ## 0.1.0
-- First working version
-    - Can create new projects with project config
-    - Can create new files with project config
+- [x] First working version
+    - [x] Can create new projects with project config
+    - [x] Can create new files with project config
+
+## 0.1.1
+- [x] Implement git features
+    - [x] Initialize repo
+- [x] Getting list of template directories from the root template directory
 
 # To-do
 
-- [ ] Implement git features
-    - [ ] Initialize repo
+- [x] Implement git features
+    - [x] Initialize repo
     - [ ] Add origin to remote repo
 - [ ] Editing project config and applying changes across all files in the project
 - [ ] Initializing project even if it has already been made but not using the project manager
-- [ ] Have the script read from script env file to get list of template folders and not rely on language names
+- [x] Have the script read from script env file to get list of template folders and not rely on language names
+    - [ ] Need to use this to get the prompt for what template to use
 - [ ] Have project automatically add license in template
 - [ ] Make it more user friendly and usable by more people since this was originally made with myself in mind
