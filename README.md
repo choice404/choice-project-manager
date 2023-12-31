@@ -141,4 +141,9 @@ chpm --help
 - [x] Have the script read from script env file to get list of template folders and not rely on language names
     - [ ] Need to use this to get the prompt for what template to use
 - [ ] Have project automatically add license in template
-- [ ] Make it more user friendly and usable by more people since this was originally made with myself in mind
+- [ ] Make it more user-friendly and usable by more people since this was originally made with myself in mind
+- [ ] Create task management features
+    - [ ] Progress tracking
+    - [ ] Time tracking
+- [ ] Potential collaboration features
+    - [ ] Can potentially be used to work with communication tools like slack, discord, etc
