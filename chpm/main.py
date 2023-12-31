@@ -153,7 +153,7 @@ def main(cmd, language, license_name, filename, name, desc, auth, list_templates
     '''
     if template_dir == "" and cmd != "set" and not set_template:
         print('''Please set the template directory
-Syntax: chpm2 set''')
+Syntax: chpm set''')
         return
 
     if language == "" and cmd == "create":
