@@ -6,6 +6,7 @@ See end of file for extended copyright information
 import click
 from jinja2 import Environment, FileSystemLoader
 import os
+import json
 from dotenv import load_dotenv
 from datetime import date
 
@@ -110,31 +111,33 @@ script_env = os.path.join(script_dir, ".chpm.env")
 if not os.path.exists(script_env):
     with open(script_env, 'w') as file:
         file.write(f'''TEMPLATE_DIR=
-TEMPLATE_NAMES=""''')
+TEMPLATE_NAMES="[]"''')
 
 load_dotenv(dotenv_path=script_env)
 
-TEMPLATE_NAMES = os.getenv("TEMPLATE_NAMES")
+template_names_str = os.getenv("TEMPLATE_NAMES")
+TEMPLATE_NAMES = []
+if template_names_str != None:
+    TEMPLATE_NAMES = json.loads(str(template_names_str))
+TEMPLATE_NAMES.append("")
 
 template_dir = os.getenv("TEMPLATE_DIR")
 
 @click.command()
 @click.argument('cmd', type=click.Choice(['create', 'newfile', 'set', '']), default="")
-@click.argument('language', type=click.Choice(list(LANGUAGES.keys())), default="")
+@click.argument('template', type=click.Choice(TEMPLATE_NAMES), default="")
 @click.argument('license_name', type=click.Choice(list(LICENSE.keys())), default="arr")
 @click.option('-f', '--filename', help="The name of the newfile")
 @click.option('-n', '--name', help="The name of the project")
 @click.option('-d', '--desc', help="The description of the project")
 @click.option('-a', '--auth', help="The name of the author of the project")
+@click.option('-l', '--language', help="The language of the project or newfile")
 @click.option('-ls', '--list', 'list_templates', is_flag=True, help="List all available templates")
 @click.option('-s', '--set', 'set_template', is_flag=True, help="Set the current directory as the template directory")
-@click.option('-l', '--license', 'list_license', is_flag=True, help="List all available licenses")
+@click.option('-li', '--license', 'list_license', is_flag=True, help="List all available licenses")
 @click.option('-g', '--git', 'git', is_flag=True, help="Initialize created project as a git repository")
-def main(cmd, language, license_name, filename, name, desc, auth, list_templates, set_template, list_license, git):
-    '''ument('license_name', type=click.Choice(list(LICENSE.keys())), default="arr")
-@click.option('-f', '--filename', help="The name of the newfile")
-@click.option('-n', '--name', help="The name of the project")
-@click.option('-d', '--desc', 
+def main(cmd, template, license_name, filename, name, desc, auth, language, list_templates, set_template, list_license, git):
+    '''
     A template managing project to create new projects and files using templates
             
             Parameters:
@@ -157,15 +160,15 @@ Syntax: chpm set''')
         return
 
     if language == "" and cmd == "create":
-        print('''Please specify the language
-Syntax: chpm create <language> <license?>''')
+        print('''Please specify the template
+Syntax: chpm create <template> <license?>''')
         return
 
     if cmd == "set" or set_template:
         set_template_dir()
     if list_templates:
         print("Available templates:")
-        for template in ALL_LANGUAGES.keys():
+        for template in TEMPLATE_NAMES:
             print(template)
     elif list_license:
         print("Available licenses:")
@@ -174,7 +177,7 @@ Syntax: chpm create <language> <license?>''')
     elif cmd == "newfile":
         newfile(filename, language)
     elif cmd == "create":
-        create(name, desc, auth, language, license_name, git)
+        create(name, desc, auth, template, language, license_name, git)
 
 def set_template_dir():
     '''
@@ -195,13 +198,12 @@ def set_template_dir():
             file.write(f'''TEMPLATE_DIR="{current_path}
 TEMPLATE_NAMES={directory_items}"''')
         print("Template directory set successfully.")
-
     elif(template_dir_prompt.lower() == 'n'):
         return
     else:
         print("Invalid choice")
 
-def create(name, desc, auth, language, license_name, git):
+def create(name, desc, auth, template, language, license_name, git):
     '''
     Creates a new project using the project information or a specified language
 
@@ -214,21 +216,28 @@ def create(name, desc, auth, language, license_name, git):
             Returns:
                     None
     '''
+    if not template:
+        print("Please specify the template")
+        return
     if not name:
         name = click.prompt("Enter project name")
     if not desc:
         desc = click.prompt("Enter project description")
     if not auth:
         auth = click.prompt("Enter project author name")
+    if not language:
+        language = click.prompt("Enter project language")
 
     project_lang = LANGUAGES[language]
     project_license = LICENSE[license_name]
 
-    target_template_dir = f'{template_dir}/{LANGUAGES[language]}'
+    target_template_dir = f'{template_dir}/{template}'
+    log(f'Template directory: {target_template_dir}')
     os.makedirs(name)
-    env_path = os.path.join(name, '.project.env')
+    log('flag')
+    project_env_path = os.path.join(name, '.project.env')
 
-    with open(env_path, 'w') as file:
+    with open(project_env_path, 'w') as file:
         file.write(f'''projectName="{ name }"
 projectDescription="{ desc }"
 projectAuthor="{ auth }"
