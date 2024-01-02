@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='chpm',
-    version='0.1.1',
+    version='0.1.3',
     packages=find_packages(),
     entry_points={
         'console_scripts': [
@@ -19,9 +19,6 @@ setup(
         'click',
         'python-dotenv'
     ],
-    package_data={
-        'chpm': ['submodules/*/*.py'],  # Include all Python files in submodules
-    },
 )
 
 """

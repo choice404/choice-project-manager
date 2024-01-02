@@ -10,7 +10,7 @@ import json
 from dotenv import load_dotenv
 from datetime import date
 
-LANGUAGES = {
+DEP_LANGUAGES = {
     "py": "python",
     "c": "c",
     "cpp": "c++",
@@ -33,36 +33,49 @@ LANGUAGES = {
     "" : "",
 }
 
-ALL_LANGUAGES = {
+LANGUAGES = {
     "py": "python",
+    "python": "python",
     "c": "c",
     "cpp": "c++",
+    "c++": "c++",
     "h": "c++",
     "hpp": "c++",
     "cs": "c#",
+    "c#": "c#",
     "sh": "bash",
+    "bash": "bash",
     "ng": "angular",
+    "angular": "angular",
     "java": "java",
     "js": "javascript",
+    "javascript": "javascript",
     "ts": "typescript",
+    "typescript": "typescript",
     "html": "html",
     "css": "css",
     "scss": "scss",
     "sass": "sass",
     "go": "go",
     "rs": "rust",
+    "rust": "rust",
     "php": "php",
     "rb": "ruby",
+    "ruby": "ruby",
     "kt": "kotlin",
+    "kotlin": "kotlin",
     "swift": "swift",
     "scala": "scala",
     "hs": "haskell",
+    "haskell": "haskell",
     "lua": "lua",
     "dart": "dart",
     "sql": "sql",
     "pl": "perl",
+    "perl": "perl",
     "r": "r",
     "mat": "matlab",
+    "matlab": "matlab",
     "asm": "assembly",
 }
 
@@ -102,7 +115,8 @@ LANGUAGES_REVERSE = {
 LICENSE = {
     "gnu": "GNU General Public License 3.0",
     "mit": "MIT License",
-    "arr": "All rights reserved"
+    "arr": "All rights reserved",
+    "": "",
 }
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -126,17 +140,17 @@ if(template_dir != None):
 TEMPLATE_NAMES.append("")
 
 @click.command()
-@click.argument('cmd', type=click.Choice(['create', 'newfile', 'set', '']), default="")
+@click.argument('cmd', type=click.Choice(['create', 'newfile', 'set', 'init', '']), default="")
 @click.argument('template', type=click.Choice(TEMPLATE_NAMES), default="")
-@click.argument('license_name', type=click.Choice(list(LICENSE.keys())), default="arr")
+@click.argument('license_name', type=click.Choice(list(LICENSE.keys())), default="")
 @click.option('-f', '--filename', help="The name of the newfile")
 @click.option('-n', '--name', help="The name of the project")
 @click.option('-d', '--desc', help="The description of the project")
 @click.option('-a', '--auth', help="The name of the author of the project")
 @click.option('-l', '--language', help="The language of the project or newfile")
-@click.option('-ls', '--list', 'list_templates', is_flag=True, help="List all available templates")
+@click.option('-lt', '--list', 'list_templates', is_flag=True, help="List all available templates")
 @click.option('-s', '--set', 'set_template', is_flag=True, help="Set the current directory as the template directory")
-@click.option('-li', '--license', 'list_license', is_flag=True, help="List all available licenses")
+@click.option('-ll', '--license', 'list_license', is_flag=True, help="List all available licenses")
 @click.option('-g', '--git', 'git', is_flag=True, help="Initialize created project as a git repository")
 def main(cmd, template, license_name, filename, name, desc, auth, language, list_templates, set_template, list_license, git):
     '''
@@ -161,14 +175,9 @@ def main(cmd, template, license_name, filename, name, desc, auth, language, list
 Syntax: chpm set''')
         return
 
-    if language == "" and cmd == "create":
-        print('''Please specify the template
-Syntax: chpm create <template> <license?>''')
-        return
-
     if cmd == "set" or set_template:
         set_template_dir()
-    if list_templates:
+    elif list_templates:
         print("Available templates:")
         for template in TEMPLATE_NAMES:
             print(template)
@@ -179,7 +188,18 @@ Syntax: chpm create <template> <license?>''')
     elif cmd == "newfile":
         newfile(filename, language)
     elif cmd == "create":
+        if language == "":
+            print('''Please specify the template
+    Syntax: chpm create <template> <license?>''')
+            return
+        if license_name == "":
+            print('''Please specify the template
+    Syntax: chpm create <template> <license?>''')
+            return
+
         create(name, desc, auth, template, language, license_name, git)
+    elif cmd == "init":
+        init(name, desc, auth, language, license_name, git)
 
 def set_template_dir():
     '''
@@ -330,6 +350,37 @@ def newfile(filename, language):
         output_file.write(rendered_content)
 
     print(f'File "{filename}" created successfully.')
+
+def init(name, desc, auth, language, license_name, git):
+
+    current_dir_items = os.listdir(os.getcwd())
+    if ".project.env" in current_dir_items:
+        print("Project already created in current directory")
+        return
+
+    if not name:
+        name = click.prompt("Enter project name")
+    if not desc:
+        desc = click.prompt("Enter project description")
+    if not auth:
+        auth = click.prompt("Enter project author name")
+    if not language:
+        language = click.prompt("Enter project language")
+    if license_name == "":
+        license_name = click.prompt("Enter project license")
+
+    project_language = LANGUAGES[language]
+    project_license = LICENSE[license_name]
+
+    project_env_path = os.path.join(os.getcwd(), '.project.env')
+
+    with open(project_env_path, 'w') as file:
+        file.write(f'''projectName="{ name }"
+projectDescription="{ desc }"
+projectAuthor="{ auth }"
+licenseName="{ project_license }"
+projectLanguage="{ project_language }"
+year="{ date.today().year }"''')
 
 def log(message):
     print(message)
