@@ -13,7 +13,7 @@
 * [To-do](#to-do)
 
 # About
-[v0.1.2](##0.1.2)
+[v0.1.2](#012)
 
 A project template manager created using Jinja2 in python to create new project and add new files to projects created with this
 
