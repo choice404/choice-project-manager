@@ -1,6 +1,6 @@
 # Choice Project Manager
 
-[![version](https://img.shields.io/badge/version-0.1.1-blue.svg)](https://github.com/choisauce/choice-project-manager)
+[![version](https://img.shields.io/badge/version-0.1.2-blue.svg)](https://github.com/choisauce/choice-project-manager)
 [![License](https://img.shields.io/badge/License-GPL3.0-red.svg)](https://github.com/choisauce/choice-project-manager/blob/main/LICENSE)
 
 ![Demo](./readme_assets/chpm.gif)
@@ -13,7 +13,7 @@
 * [To-do](#to-do)
 
 # About
-[v0.1.3](##0.1.3)
+[v0.1.3](##013)
 
 A project template manager created using Jinja2 in python to create new project and add new files to projects created with this
 
