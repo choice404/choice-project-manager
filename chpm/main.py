@@ -110,18 +110,20 @@ script_env = os.path.join(script_dir, ".chpm.env")
 
 if not os.path.exists(script_env):
     with open(script_env, 'w') as file:
-        file.write(f'''TEMPLATE_DIR=
-TEMPLATE_NAMES="[]"''')
+        file.write(f'''TEMPLATE_DIR=''')
 
 load_dotenv(dotenv_path=script_env)
 
-template_names_str = os.getenv("TEMPLATE_NAMES")
 TEMPLATE_NAMES = []
-if template_names_str != None:
-    TEMPLATE_NAMES = json.loads(str(template_names_str))
-TEMPLATE_NAMES.append("")
 
 template_dir = os.getenv("TEMPLATE_DIR")
+
+if(template_dir != None):
+    all_items = os.listdir(template_dir)
+    directory_items = [item for item in all_items if (os.path.isdir(os.path.join(template_dir, item)) and item != ".git")]
+    TEMPLATE_NAMES = directory_items
+
+TEMPLATE_NAMES.append("")
 
 @click.command()
 @click.argument('cmd', type=click.Choice(['create', 'newfile', 'set', '']), default="")
@@ -192,11 +194,8 @@ def set_template_dir():
     template_dir_prompt = click.prompt(f'Set {current_path} as the template directory? (y/n)')
     if template_dir_prompt.lower() == "y":
         print(f'{current_path} set as the template directory.')
-        all_items = os.listdir(current_path)
-        directory_items = [item for item in all_items if (os.path.isdir(os.path.join(current_path, item)) and item != ".git")]
         with open(script_env, 'w') as file:
-            file.write(f'''TEMPLATE_DIR="{current_path}
-TEMPLATE_NAMES={directory_items}"''')
+            file.write(f'''TEMPLATE_DIR="{current_path}"''')
         print("Template directory set successfully.")
     elif(template_dir_prompt.lower() == 'n'):
         return

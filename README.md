@@ -13,7 +13,7 @@
 * [To-do](#to-do)
 
 # About
-v0.1.1
+[v0.1.2](##0.1.2)
 
 A project template manager created using Jinja2 in python to create new project and add new files to projects created with this
 
@@ -130,6 +130,9 @@ chpm --help
 - [x] Implement git features
     - [x] Initialize repo
 - [x] Getting list of template directories from the root template directory
+
+## 0.1.2
+- [x] Implemented dynamically getting template names from the template directory
 
 # To-do
 

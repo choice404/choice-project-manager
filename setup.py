@@ -12,7 +12,15 @@ setup(
     entry_points={
         'console_scripts': [
             'chpm = chpm.main:main'
-        ],
+            ],
+    },
+    install_requires=[
+        'jinja2',
+        'click',
+        'python-dotenv'
+    ],
+    package_data={
+        'chpm': ['submodules/*/*.py'],  # Include all Python files in submodules
     },
 )
 
