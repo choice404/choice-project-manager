@@ -132,7 +132,7 @@ TEMPLATE_NAMES = []
 
 template_dir = os.getenv("TEMPLATE_DIR")
 
-if(template_dir != None):
+if template_dir != None:
     all_items = os.listdir(template_dir)
     directory_items = [item for item in all_items if (os.path.isdir(os.path.join(template_dir, item)) and item != ".git")]
     TEMPLATE_NAMES = directory_items
@@ -311,22 +311,24 @@ def newfile(filename, language):
     '''
     if not filename:
         filename = click.prompt("Enter filename")
+    current_path = os.getcwd()
 
     project_language = ""
-
-    if language != "":
-        project_language = language
-
-    current_path = os.getcwd()
-    traverse_path = current_path
-    while traverse_path != os.path.dirname(traverse_path):
-        project_env = os.path.join(traverse_path, ".project.env")
-        traverse_path = os.path.dirname(traverse_path)
-        if(os.path.exists(project_env)) and os.path.isfile(project_env):
-            load_dotenv(dotenv_path=project_env)
-            if language == "":
+    
+    if not language:
+        traverse_path = current_path
+        while traverse_path != os.path.dirname(traverse_path):
+            project_env = os.path.join(traverse_path, ".project.env")
+            traverse_path = os.path.dirname(traverse_path)
+            if(os.path.exists(project_env)) and os.path.isfile(project_env):
+                log("Found project.env")
+                load_dotenv(dotenv_path=project_env)
                 project_language = LANGUAGES_REVERSE[str(os.getenv("projectLanguage"))]
-            break
+                break
+    else:
+        log("Language specified")
+        log(f"Language: {language}")
+        project_language = language
 
     template_vars = os.environ
 

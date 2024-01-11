@@ -139,6 +139,9 @@ chpm --help
 - [x] Have the script read from script env file to get list of template folders and not rely on language names
     - [x] Need to use this to get the prompt for what template to use
 
+## 0.1.4
+- [x] Fixed newfile so it properly gets the language information from the .project.env file
+
 # To-do
 
 - [x] Implement git features
