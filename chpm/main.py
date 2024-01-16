@@ -313,19 +313,22 @@ def newfile(filename, language):
 
     project_language = ""
     
+    traverse_path = current_path
+    while traverse_path != os.path.dirname(traverse_path):
+        project_env = os.path.join(traverse_path, ".project.env")
+        traverse_path = os.path.dirname(traverse_path)
+        if(os.path.exists(project_env)) and os.path.isfile(project_env):
+            load_dotenv(dotenv_path=project_env)
+            break
+
     if not language:
-        traverse_path = current_path
-        while traverse_path != os.path.dirname(traverse_path):
-            project_env = os.path.join(traverse_path, ".project.env")
-            traverse_path = os.path.dirname(traverse_path)
-            if(os.path.exists(project_env)) and os.path.isfile(project_env):
-                load_dotenv(dotenv_path=project_env)
-                project_language = LANGUAGES_REVERSE[str(os.getenv("projectLanguage"))]
-                break
+            project_language = LANGUAGES_REVERSE[str(os.getenv("projectLanguage"))]
     else:
         project_language = language
 
     template_vars = os.environ
+
+    template_vars["filename"] = filename
 
     if project_language == "html":
         tailwind = click.prompt("Do you want to use tailwindcss? (y/n)")
