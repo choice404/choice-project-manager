@@ -11,6 +11,7 @@ import json
 from dotenv import load_dotenv
 from datetime import date
 
+# List of languages that this project supports
 DEP_LANGUAGES = {
     "py": "python",
     "c": "c",
